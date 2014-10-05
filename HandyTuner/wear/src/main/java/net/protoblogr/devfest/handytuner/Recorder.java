@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 /**
  * Created by jja on 05/10/14.
+ * Original code from GuitarTuner, Copyright (C) 2009 by Aleksey Surkov.
  */
 public class Recorder implements Runnable {
     int audio_source = MediaRecorder.AudioSource.MIC;

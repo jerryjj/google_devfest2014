@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 public class LaunchActivity extends Activity {
 
     private TextView mTextView;
@@ -20,5 +22,9 @@ public class LaunchActivity extends Activity {
                 mTextView = (TextView) stub.findViewById(R.id.text);
             }
         });
+    }
+
+    public void ShowPitchDetectionResult(String message, HashMap<Double, Double> frequencies) {
+        // TODO: implement UI update
     }
 }

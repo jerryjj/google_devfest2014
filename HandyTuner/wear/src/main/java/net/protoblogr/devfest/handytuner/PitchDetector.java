@@ -18,7 +18,7 @@ package net.protoblogr.devfest.handytuner;
         import android.media.AudioRecord;
         import android.media.MediaRecorder.AudioSource;
         import android.os.Handler;
-
+/*
 public class PitchDetector implements Runnable {
     // Currently, only this combination of rate, encoding and channel mode actually works.
     private final static int RATE = 8000;
@@ -102,3 +102,4 @@ public class PitchDetector implements Runnable {
     private AudioRecord recorder_;
     private Handler handler_;
 }
+*/

@@ -11,7 +11,8 @@ import java.util.HashMap;
 
 public class LaunchActivity extends Activity {
 
-    private TextView mTextView;
+    private TextView riTextView;
+    Thread recorder_thread_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,15 +22,27 @@ public class LaunchActivity extends Activity {
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
-                mTextView = (TextView) stub.findViewById(R.id.text);
+                riTextView = (TextView) stub.findViewById(R.id.recorder_info);
             }
         });
+
+         //, new Handler()
     }
 
     public void onStartRecord(View view) {
         Log.d("View", "onStartRecord");
+        recorder_thread_ = new Thread(new Recorder(this));
+        recorder_thread_.start();
+    }
+    public void onStopRecord(View view) {
+        Log.d("View", "onStopRecord");
 
-    public void ShowPitchDetectionResult(String message, HashMap<Double, Double> frequencies) {
+        recorder_thread_.interrupt();
+    }
+
+    public void ShowRecorderDetectionResult(String message, HashMap<Double, Double> frequencies) {
         // TODO: implement UI update
+        //Log.d("ShowRecorderDetectionResult", message);
+        riTextView.setText(message);
     }
 }

@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 public class LaunchActivity extends Activity {
 
     private TextView mTextView;
@@ -26,5 +28,8 @@ public class LaunchActivity extends Activity {
 
     public void onStartRecord(View view) {
         Log.d("View", "onStartRecord");
+
+    public void ShowPitchDetectionResult(String message, HashMap<Double, Double> frequencies) {
+        // TODO: implement UI update
     }
 }

@@ -26,7 +26,7 @@ public class LaunchActivity extends Activity {
             }
         });
 
-         //, new Handler()
+        //, new Handler()
     }
 
     public void onStartRecord(View view) {

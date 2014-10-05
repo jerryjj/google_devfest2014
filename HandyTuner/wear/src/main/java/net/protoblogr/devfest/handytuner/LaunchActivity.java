@@ -3,6 +3,8 @@ package net.protoblogr.devfest.handytuner;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 public class LaunchActivity extends Activity {
@@ -20,5 +22,9 @@ public class LaunchActivity extends Activity {
                 mTextView = (TextView) stub.findViewById(R.id.text);
             }
         });
+    }
+
+    public void onStartRecord(View view) {
+        Log.d("View", "onStartRecord");
     }
 }

@@ -7,9 +7,10 @@
     tools:context=".LaunchActivity"
     tools:deviceIds="wear_square">
 
-    <TextView
-        android:id="@+id/text"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_square" />
+        android:id="@+id/start_record_button"
+        android:onClick="onStartRecord"
+        android:text="Record"/>
 </LinearLayout>

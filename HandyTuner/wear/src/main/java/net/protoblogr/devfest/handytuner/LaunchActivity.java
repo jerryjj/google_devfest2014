@@ -345,6 +345,5 @@ public class LaunchActivity extends Activity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-<<<<<<< HEAD
     */
 }

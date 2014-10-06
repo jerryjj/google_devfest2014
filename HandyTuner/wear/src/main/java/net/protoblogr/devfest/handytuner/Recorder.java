@@ -36,6 +36,8 @@ public class Recorder implements Runnable {
     private AudioRecord recorder_;
     private Handler handler_;
 
+    public Boolean running = false;
+
     //public native void DoFFT(double[] data, int size);
 
     public Recorder(LaunchActivity parent) {
@@ -45,16 +47,21 @@ public class Recorder implements Runnable {
         //System.loadLibrary("fft-jni");
     }
 
-    private void PostToUI(final String msg, final HashMap<Double, Double> frequencies) {
+    private void PostToUI(final String msg, final double best_frequency, final HashMap<Double, Double> frequencies) {
         handler_.post(new Runnable() {
             public void run() {
-                parent_.ShowRecorderDetectionResult(msg, frequencies);
+                parent_.ShowRecorderDetectionResult(msg, best_frequency, frequencies);
             }
         });
     }
 
     public void run() {
+        if (running) {
+            Log.d("Recorder", "already running");
+            return;
+        }
         Log.d("Recorder", "start");
+        running = true;
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
         recorder_ = new AudioRecord(MediaRecorder.AudioSource.MIC,
                 RATE,
@@ -62,7 +69,7 @@ public class Recorder implements Runnable {
                 ENCODING,
                 6144);
         if (recorder_.getState() != AudioRecord.STATE_INITIALIZED) {
-            parent_.ShowRecorderDetectionResult("Can't initialize AudioRecord", null);
+            parent_.ShowRecorderDetectionResult("Can't initialize AudioRecord", 0.0, null);
             return;
         }
 
@@ -73,7 +80,7 @@ public class Recorder implements Runnable {
         final int min_frequency_fft = Math.round(MIN_FREQUENCY * CHUNK_SIZE_IN_SAMPLES / RATE);
         final int max_frequency_fft = Math.round(MAX_FREQUENCY * CHUNK_SIZE_IN_SAMPLES / RATE);
 
-        while(!Thread.interrupted()) {
+        while(!Thread.interrupted() && running) {
             //Log.d("Recorder", "Recording...");
             recorder_.startRecording();
             recorder_.read(audio_data, 0, CHUNK_SIZE_IN_BYTES / 2);
@@ -81,6 +88,7 @@ public class Recorder implements Runnable {
             for (int i = 0; i < CHUNK_SIZE_IN_SAMPLES; i++) {
                 x_r[i] = audio_data[i]; x_i[i] = 0;
             }
+            fft.doFFT(x_r, x_i, false);
             double best_frequency = min_frequency_fft;
             double best_amplitude = 0;
             HashMap<Double, Double> frequencies = new HashMap<Double, Double>();
@@ -102,9 +110,13 @@ public class Recorder implements Runnable {
             }
             String retval = Math.round(best_frequency) + " Hz";
             //String retval = "Hello from recorder";
-            Log.d("retval hz", retval);
-            if (best_amplitude < MIN_AMPLITUDE) retval = "<make a sound>";
-            PostToUI(retval, frequencies);
+            //Log.d("best_frequency hz", ""+best_frequency);
+            //Log.d("best_amplitude", ""+best_amplitude);
+            //if (best_amplitude < MIN_AMPLITUDE) retval = "<make a sound>";
+            //PostToUI(retval, frequencies);
+            if (best_amplitude > MIN_AMPLITUDE) {
+                PostToUI(retval, best_frequency, frequencies);
+            }
         }
     }
 }

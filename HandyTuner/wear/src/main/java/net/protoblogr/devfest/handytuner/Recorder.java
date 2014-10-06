@@ -32,7 +32,7 @@ public class Recorder implements Runnable {
     private final static int DRAW_FREQUENCY_STEP = 10;
     private final static int MIN_AMPLITUDE = 100;
 
-    private LaunchActivity parent_;
+    private TuneIntent parent_;
     private AudioRecord recorder_;
     private Handler handler_;
 
@@ -40,7 +40,7 @@ public class Recorder implements Runnable {
 
     //public native void DoFFT(double[] data, int size);
 
-    public Recorder(LaunchActivity parent) {
+    public Recorder(TuneIntent parent) {
         parent_ = parent;
         handler_ = new Handler();
 

@@ -15,6 +15,8 @@ import java.util.HashMap;
  * Original code from GuitarTuner, Copyright (C) 2009 by Aleksey Surkov.
  */
 public class Recorder implements Runnable {
+    private static String TAG = "Recorder";
+
     int audio_source = MediaRecorder.AudioSource.MIC;
     // Currently, only this combination of rate, encoding and channel mode actually works.
     private final static int RATE = 8000;
@@ -50,17 +52,17 @@ public class Recorder implements Runnable {
     private void PostToUI(final String msg, final double best_frequency, final HashMap<Double, Double> frequencies) {
         handler_.post(new Runnable() {
             public void run() {
-                parent_.ShowRecorderDetectionResult(msg, best_frequency, frequencies);
+            parent_.ShowRecorderDetectionResult(msg, best_frequency, frequencies);
             }
         });
     }
 
     public void run() {
         if (running) {
-            Log.d("Recorder", "already running");
+            Log.d(TAG, "already running");
             return;
         }
-        Log.d("Recorder", "start");
+        Log.d(TAG, "start");
         running = true;
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
         recorder_ = new AudioRecord(MediaRecorder.AudioSource.MIC,
@@ -81,7 +83,7 @@ public class Recorder implements Runnable {
         final int max_frequency_fft = Math.round(MAX_FREQUENCY * CHUNK_SIZE_IN_SAMPLES / RATE);
 
         while(!Thread.interrupted() && running) {
-            //Log.d("Recorder", "Recording...");
+            //Log.d(TAG, "Recording...");
             recorder_.startRecording();
             recorder_.read(audio_data, 0, CHUNK_SIZE_IN_BYTES / 2);
             recorder_.stop();
@@ -110,8 +112,8 @@ public class Recorder implements Runnable {
             }
             String retval = Math.round(best_frequency) + " Hz";
             //String retval = "Hello from recorder";
-            //Log.d("best_frequency hz", ""+best_frequency);
-            //Log.d("best_amplitude", ""+best_amplitude);
+            //Log.d(TAG, "best_frequency hz: "+best_frequency);
+            //Log.d(TAG, "best_amplitude: "+best_amplitude);
             //if (best_amplitude < MIN_AMPLITUDE) retval = "<make a sound>";
             //PostToUI(retval, frequencies);
             if (best_amplitude > MIN_AMPLITUDE) {

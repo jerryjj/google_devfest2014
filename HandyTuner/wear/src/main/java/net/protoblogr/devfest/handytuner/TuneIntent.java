@@ -18,6 +18,8 @@ import java.util.Map;
  * Created by jja on 06/10/14.
  */
 public class TuneIntent extends Activity {
+    private static String TAG = "TuneIntent";
+
     private TextView riTextView;
     private Button e4_btn;
     private Button b3_btn;
@@ -66,7 +68,7 @@ public class TuneIntent extends Activity {
 
     @Override
     protected void onStop() {
-        Log.d("Activity", "onStop");
+        Log.d(TAG, "onStop");
         if (_recorder.running) {
             _recorder.running = false;
             recorder_thread_.interrupt();
@@ -98,7 +100,7 @@ public class TuneIntent extends Activity {
                 break;
         }
 
-        Log.d("View", "handleNoteClick: "+curr_note);
+        Log.d(TAG, "handleNoteClick: "+curr_note);
         if (previous_note == curr_note) {
             _recorder.running = false;
             recorder_thread_.interrupt();
@@ -124,8 +126,8 @@ public class TuneIntent extends Activity {
                 closest_note = entry.getKey();
                 closest_diff = entry.getValue();
             }
-            Log.d("Tunes", "closest note: "+closest_note);
-            Log.d("Tunes", "closest diff: "+closest_diff);
+            Log.d(TAG, "closest note: "+closest_note);
+            Log.d(TAG, "closest diff: "+closest_diff);
         }
 
         if (curr_note != closest_note) {
@@ -136,7 +138,7 @@ public class TuneIntent extends Activity {
         _recorder.running = false;
         recorder_thread_.interrupt();
 
-        Log.d("ShowRecorderDetectionResult", "got current note "+curr_note+" in range: "+closest_diff);
+        Log.d(TAG, "got current note "+curr_note+" in range: "+closest_diff);
         riTextView.setText("Got "+closest_note);
 
         if (closest_note == "E4") {

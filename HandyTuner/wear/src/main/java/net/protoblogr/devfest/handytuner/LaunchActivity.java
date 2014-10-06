@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class LaunchActivity extends InsetActivity {
-    private static String TAG="LaunchActivity";
+    private static String TAG = "LaunchActivity";
 
     private View _main_view;
 
